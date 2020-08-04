@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third party apps
     'rest_framework',
+    'rest_framework.authtoken',
+
     # local apps
     'user'
 ]
@@ -122,6 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+from sound_cloud_backend.restconf.main import *
 
 # Settigs for S3 storage
 

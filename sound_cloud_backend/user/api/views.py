@@ -25,6 +25,7 @@ class UserCreateAPIView(generics.CreateAPIView):
 		data = serializer.errors
 		return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-	# def perform_create(self, serializer):
-	# 	print(self.request.user)
-	# 	serializer.save(user = self.request.user)
+class Logout(APIView):
+	def get(self, request, format=None):
+		request.user.auth_token.delete()
+		return Response(status=status.HTTP_200_OK)

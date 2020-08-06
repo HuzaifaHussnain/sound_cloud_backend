@@ -1,0 +1,1 @@
+web: gunicorn sound_cloud_backend.wsgi

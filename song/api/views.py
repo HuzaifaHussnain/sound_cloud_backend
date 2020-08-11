@@ -1,8 +1,9 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from song.models import Song
-from .serializers import SongSerializer, SongListSerializer
+from .serializers import SongSerializer, SongListSerializer, CommentSerializer
 
 
 class SongListAPIView(generics.ListAPIView):
@@ -37,3 +38,12 @@ class SearchSongAPIView(generics.ListAPIView):
 		if tag is not None:
 			queryset = queryset.filter(tags__icontains=tag)
 		return queryset
+
+
+class PostCommentAPIView(generics.CreateAPIView):
+	serializer_class = CommentSerializer
+	
+	def perform_create(self, serializer):
+		song_id = self.request.data['song_id']
+		song = get_object_or_404(Song, id=song_id)
+		serializer.save(user=self.request.user, song=song)

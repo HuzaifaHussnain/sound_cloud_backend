@@ -6,7 +6,7 @@ class CommentSerializer(serializers.ModelSerializer):
 	'''
 	Serializer class for comments on a Song
 	'''
-	user = serializers.CharField(source='user.get_full_name', read_only=True)
+	user = serializers.CharField(source='user.get_username', read_only=True)
 	class Meta:
 		model = Comment
 		fields = ['id', 'body', 'user', 'created_on']

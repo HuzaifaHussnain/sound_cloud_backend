@@ -2,16 +2,23 @@ from rest_framework import generics, status
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from song.models import Song
-from .serializers import SongSerializer
+from .serializers import SongSerializer, SongListSerializer
 
 
 class SongListAPIView(generics.ListAPIView):
 	'''
 	Return a list of all the songs
 	'''
-	serializer_class = SongSerializer
+	serializer_class = SongListSerializer
 	queryset = Song.objects.all()
 
+class SongDetailAPIView(generics.RetrieveAPIView):
+	'''
+	Get a single song beased on the id provied
+	'''
+	serializer_class = SongSerializer
+	queryset = Song.objects.all()
+	lookup_field = 'id'
 
 class SearchSongAPIView(generics.ListAPIView):
 	serializer_class = SongSerializer

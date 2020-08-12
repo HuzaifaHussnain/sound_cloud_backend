@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
+from rest_framework.views import APIView
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from song.models import Song, Comment
@@ -44,6 +45,9 @@ class SearchSongAPIView(generics.ListAPIView):
 
 
 class CommentCreateAPIView(generics.CreateAPIView):
+	''' 
+	API View to add a comment on a song
+	'''
 	serializer_class = CommentSerializer
 	
 	def perform_create(self, serializer):
@@ -52,6 +56,9 @@ class CommentCreateAPIView(generics.CreateAPIView):
 		serializer.save(user=self.request.user, song=song)
 
 class CommentUpdateAPIView(generics.UpdateAPIView):
+	''' 
+	API View to update an existing comment
+	'''
 	serializer_class = CommentSerializer
 	lookup_field = 'id'
 
@@ -61,10 +68,47 @@ class CommentUpdateAPIView(generics.UpdateAPIView):
 
 
 class CommentDeleteAPIView(generics.DestroyAPIView):
+	''' 
+	API View to delete the comment from a song
+	'''
 	serializer_class = CommentSerializer
 	lookup_field = 'id'
 
 	def get_queryset(self):
 		user = self.request.user
 		return user.comment_set.all()
+
+
+class LikeSongAPIView(APIView):
+	'''
+	This view will add a like to a song
+	'''
+	def post(self, request):
+		song_id = request.POST.get('song_id')
+		user = request.user
+		song = get_object_or_404(Song, id=song_id)
+		data = {}
+		if user not in song.likes.all():
+			song.likes.add(user)		
+		data['likes_count'] = song.likes.count()
+		data['liked_by_user'] = True
+
+		return Response(data, content_type='application/json')
+
+class RemoveLikeAPIView(APIView):
+	'''
+	This view will remove the user's like from the song
+	'''
+	def post(self, request):
+		song_id = request.POST.get('song_id')
+		user = request.user
+		song = get_object_or_404(Song, id=song_id)
+		data = {}
+		if user in song.likes.all():
+			song.likes.remove(user)		
+		data['likes_count'] = song.likes.count()
+		data['liked_by_user'] = False
+
+		return Response(data, content_type='application/json')
+
 

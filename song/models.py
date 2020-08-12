@@ -11,8 +11,11 @@ class Song(models.Model):
 	title = models.CharField(max_length=100, null=False, blank=False)
 	views = models.IntegerField(default=0)
 	tags = ArrayField(models.CharField(max_length=50), blank=True, null=True)
+	likes = models.ManyToManyField(User)
 	media_type = models.CharField(choices=SONG_FILE_CHOICES, max_length=5, default='Audio')
 	file = models.FileField(upload_to='songs/', max_length=150)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return str(self.title)
@@ -23,6 +26,8 @@ class Comment(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	body = models.TextField(null=False, blank=False)
 	created_on = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
 
 	class Meta:
 		ordering = ['created_on']

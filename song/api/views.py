@@ -112,3 +112,17 @@ class RemoveLikeAPIView(APIView):
 		return Response(data, content_type='application/json')
 
 
+class SongPlayedAPIView(APIView):
+	'''
+	This view will increment the views count of the song
+	'''
+	def post(self, request):
+		song_id = request.POST.get('song_id')
+		song = get_object_or_404(Song, id=song_id)
+		data = {}
+		song.views = song.views + 1
+		song.save()		
+		data['song_id'] = song_id
+		data['views'] = song.views
+		return Response(data, content_type='application/json')
+

@@ -133,19 +133,19 @@ class ShareSongAPIView(APIView):
 	This view will send an email to the user. When some user shares a song with another user.
 	'''
 	def post(self, request):
-		sender_id = request.POST.get('sender_id')
-		receiver_id = request.POST.get('receiver_id')
+		sender_username = request.POST.get('sender_username')
+		receiver_username = request.POST.get('receiver_username')
 		song_id = request.POST.get('song_id')
 		song = get_object_or_404(Song, id=song_id)
-		sender_obj = get_object_or_404(User, id=sender_id)
-		receiver_obj = get_object_or_404(User, id=receiver_id)
+		sender_obj = get_object_or_404(User, username=sender_username)
+		receiver_obj = get_object_or_404(User, username=receiver_username)
 		data = {}
-		if sender_id == receiver_id:
+		if sender_username == receiver_username:
 			data['error'] = 'You cannot share a song with yourself'
 		elif sender_obj is None or receiver_obj is None:
 			data['error'] = 'Invalid ID provided.'
 		else:
-			message = 'Hey {0},\n  {1} has shared "{2}" with you. Check it out on sound cloud app.'.format(sender_obj.username, receiver_obj.username, song.title)
+			message = 'Hey {0},\n  {1} has shared "{2}" with you. Check it out on sound cloud app.'.format(sender_username, receiver_username, song.title)
 			send_mail(
 				'Shared a Song with you.',
 				message,

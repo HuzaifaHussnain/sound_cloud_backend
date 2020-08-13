@@ -11,7 +11,7 @@ class Song(models.Model):
 	title = models.CharField(max_length=100, null=False, blank=False)
 	views = models.IntegerField(default=0)
 	tags = ArrayField(models.CharField(max_length=50), blank=True, null=True)
-	likes = models.ManyToManyField(User, blank=True)
+	likes = models.ManyToManyField(User, blank=True, related_name='liked_songs')
 	media_type = models.CharField(choices=SONG_FILE_CHOICES, max_length=5, default='Audio')
 	file = models.FileField(upload_to='songs/', max_length=150)
 	created_at = models.DateTimeField(auto_now_add=True)

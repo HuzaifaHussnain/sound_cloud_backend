@@ -155,3 +155,10 @@ class ShareSongAPIView(APIView):
 				)
 			data['message'] = 'Song shared.'
 		return Response(data, content_type='application/json')
+
+class LikedSongsAPIView(generics.ListAPIView):
+	serializer_class = SongListSerializer
+
+	def get_queryset(self):
+		user = self.request.user
+		return user.liked_songs.all()

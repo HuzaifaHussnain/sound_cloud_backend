@@ -10,6 +10,7 @@ from .views import (
 	RemoveLikeAPIView,
 	SongPlayedAPIView,
 	ShareSongAPIView,
+	LikedSongsAPIView,
 	)
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     path('like/', LikeSongAPIView.as_view(), name=None),
     path('remove_like/', RemoveLikeAPIView.as_view(), name=None),
     path('increment_view_count/', SongPlayedAPIView.as_view(), name=None),
-    path('share/', ShareSongAPIView.as_view(), name=None)
+    path('share/', ShareSongAPIView.as_view(), name=None),
+    path('liked_songs/', LikedSongsAPIView.as_view(), name=None)
 
 ]

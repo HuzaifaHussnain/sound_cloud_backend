@@ -8,12 +8,13 @@ from rest_framework.authtoken.models import Token
 
 
 class UserCreateAPIView(generics.CreateAPIView):
+	""" View to create a new user """
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 	permission_classes = []
 
 	def create(self, request, *args, **kwargs):
-		''' create function to create a user instance '''
+		""" create function to create a user instance """
 		serializer = UserSerializer(data = request.data)
 		data = {}
 		if serializer.is_valid():
@@ -28,7 +29,7 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 class Logout(APIView):
 	def get(self, request, format=None):
-		''' This function will delete the token to logout the user '''
+		""" This function will delete the token to logout the user """
 		request.user.auth_token.delete()
 		return Response(status=status.HTTP_200_OK)
 

@@ -34,6 +34,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
     'user',
+    'song',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -140,11 +142,12 @@ AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
 MEDIA_URL = '/mediafiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # for sending emails
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

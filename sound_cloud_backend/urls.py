@@ -24,5 +24,6 @@ urlpatterns = [
     path('user/password_reset/', views.PasswordResetView.as_view(), name = 'password_reset'),
     path('user/reset/done/', views.PasswordResetDoneView.as_view(), name = 'password_reset_done'),
     path('user/reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name = 'password_reset_confirm'),
-    path('user/password_reset/complete', views.PasswordResetCompleteView.as_view(), name = 'password_reset_complete')
+    path('user/password_reset/complete', views.PasswordResetCompleteView.as_view(), name = 'password_reset_complete'),
+    path('api/song/', include('song.api.urls'), name = None)
 ]

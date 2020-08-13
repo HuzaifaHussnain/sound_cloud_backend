@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from song.models import Song, Comment
+from django.contrib.auth.models import User
 from .serializers import SongSerializer, SongListSerializer, CommentSerializer
 
 
@@ -126,3 +128,30 @@ class SongPlayedAPIView(APIView):
 		data['views'] = song.views
 		return Response(data, content_type='application/json')
 
+class ShareSongAPIView(APIView):
+	'''
+	This view will send an email to the user. When some user shares a song with another user.
+	'''
+	def post(self, request):
+		sender_id = request.POST.get('sender_id')
+		receiver_id = request.POST.get('receiver_id')
+		song_id = request.POST.get('song_id')
+		song = get_object_or_404(Song, id=song_id)
+		sender_obj = get_object_or_404(User, id=sender_id)
+		receiver_obj = get_object_or_404(User, id=receiver_id)
+		data = {}
+		if sender_id == receiver_id:
+			data['error'] = 'You cannot share a song with yourself'
+		elif sender_obj is None or receiver_obj is None:
+			data['error'] = 'Invalid ID provided.'
+		else:
+			message = 'Hey {0},\n  {1} has shared "{2}" with you. Check it out on sound cloud app.'.format(sender_obj.username, receiver_obj.username, song.title)
+			send_mail(
+				'Shared a Song with you.',
+				message,
+				sender_obj.email,
+				[receiver_obj.email],
+				fail_silently=True,
+				)
+			data['message'] = 'Song shared.'
+		return Response(data, content_type='application/json')

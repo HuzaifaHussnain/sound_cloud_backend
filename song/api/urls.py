@@ -9,6 +9,7 @@ from .views import (
 	LikeSongAPIView,
 	RemoveLikeAPIView,
 	SongPlayedAPIView,
+	ShareSongAPIView,
 	)
 
 urlpatterns = [
@@ -20,6 +21,7 @@ urlpatterns = [
     path('comment/delete/<int:id>', CommentDeleteAPIView.as_view(), name=None),
     path('like/', LikeSongAPIView.as_view(), name=None),
     path('remove_like/', RemoveLikeAPIView.as_view(), name=None),
-    path('increment_view_count/', SongPlayedAPIView.as_view(), name=None)
+    path('increment_view_count/', SongPlayedAPIView.as_view(), name=None),
+    path('share/', ShareSongAPIView.as_view(), name=None)
 
 ]

@@ -3,7 +3,7 @@ from song.models import Song
 
 
 class SongSerializer(serializers.ModelSerializer):
-	''' Serializer class for Song model '''
+	""" Serializer class for Song model """
 
 	class Meta:
 		model = Song

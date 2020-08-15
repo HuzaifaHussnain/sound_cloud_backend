@@ -150,7 +150,7 @@ class ShareSongAPIView(APIView):
 				message,
 				sender_obj.email,
 				[receiver_obj.email],
-				fail_silently=True,
+				fail_silently=False,
 				)
 			data['message'] = 'Song shared.'
 		return Response(data, content_type='application/json')

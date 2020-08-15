@@ -139,12 +139,12 @@ class ShareSongAPIView(APIView):
 		sender_obj = request.user
 		receiver_obj = get_object_or_404(User, username=receiver_username)
 		data = {}
-		if sender_username == receiver_username:
+		if sender_obj.username == receiver_username:
 			data['error'] = 'You cannot share a song with yourself'
 		elif sender_obj is None or receiver_obj is None:
 			data['error'] = 'Invalid ID provided.'
 		else:
-			message = 'Hey {0},\n  {1} has shared "{2}" with you. Check it out on sound cloud app.'.format(sender_username, receiver_username, song.title)
+			message = 'Hey {0},\n  {1} has shared "{2}" with you. Check it out on sound cloud app.'.format(receiver_username, sender_obj.username, song.title)
 			send_mail(
 				'Shared a Song with you.',
 				message,

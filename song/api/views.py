@@ -133,11 +133,10 @@ class ShareSongAPIView(APIView):
 	This view will send an email to the user. When some user shares a song with another user.
 	'''
 	def post(self, request):
-		sender_username = request.POST.get('sender_username')
 		receiver_username = request.POST.get('receiver_username')
 		song_id = request.POST.get('song_id')
 		song = get_object_or_404(Song, id=song_id)
-		sender_obj = get_object_or_404(User, username=sender_username)
+		sender_obj = request.user
 		receiver_obj = get_object_or_404(User, username=receiver_username)
 		data = {}
 		if sender_username == receiver_username:
@@ -157,6 +156,7 @@ class ShareSongAPIView(APIView):
 		return Response(data, content_type='application/json')
 
 class LikedSongsAPIView(generics.ListAPIView):
+	""" Get the songs liked by the current user """
 	serializer_class = SongListSerializer
 
 	def get_queryset(self):
